@@ -1,20 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   classAPI: [],
-}
+};
 
 const classSlice = createSlice({
-  name: 'classAPI',
+  name: "classAPI",
   initialState,
   reducers: {
-
-    newClass: (state:any, action) => {
-      state.classAPI = [action.payload]
+    newClass: (state: any, action) => {
+      state.classAPI = [action.payload];
     },
-  }
-})
+  },
+});
 
-export const {newClass} = classSlice.actions
+export const { newClass } = classSlice.actions;
 
-export default classSlice.reducer
+export default classSlice.reducer;

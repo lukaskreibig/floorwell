@@ -1,49 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import MaterialList from './components/MaterialList/MaterialList';
-import { useDispatch } from 'react-redux'
-import { newMaterial } from './store/material'
-import { newClass } from './store/class'
-import { SelectChangeEvent } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import MaterialList from "./components/MaterialList/MaterialList";
+import { useDispatch } from "react-redux";
+import { newMaterial } from "./store/material";
+import { newClass } from "./store/class";
+import { SelectChangeEvent } from "@mui/material";
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>("");
   const [materialClass, setMaterialClass] = useState<string>("1");
-  const [reset, setReset] = useState<boolean>(false)
-  const dispatch = useDispatch()
+  const [reset, setReset] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-const resetTable = () => {
-  setReset(true)
-  setReset(false)
-}
+  const resetTable = () => {
+    setReset(true);
+    setReset(false);
+  };
 
-const handleChange = (event: SelectChangeEvent) => {
-  setMaterialClass(event.target.value as string);
-};
-
+  const handleChange = (event: SelectChangeEvent) => {
+    setMaterialClass(event.target.value as string);
+  };
 
   useEffect((): void => {
     const getData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const [materialFetch, classFetch] = await Promise.all(
-          [
-            fetch(
-              `/api/fw_material`, 
-          {
-          headers: {
-            'X-ApiKey': 'ZGF0IGdpYnQgZWluIGJvbnVzcHVua3Q='
-          }
-        }
-            ), fetch(`/api/fw_materialclass`, 
-            {
+        const [materialFetch, classFetch] = await Promise.all([
+          fetch(`/api/fw_material`, {
             headers: {
-              'X-ApiKey': 'ZGF0IGdpYnQgZWluIGJvbnVzcHVua3Q='
-            }
-          })
-          ]
-        );
+              "X-ApiKey": "ZGF0IGdpYnQgZWluIGJvbnVzcHVua3Q=",
+            },
+          }),
+          fetch(`/api/fw_materialclass`, {
+            headers: {
+              "X-ApiKey": "ZGF0IGdpYnQgZWluIGJvbnVzcHVua3Q=",
+            },
+          }),
+        ]);
         if (!materialFetch.ok || !classFetch.ok) {
           setLoading(false);
           throw new Error(
@@ -56,14 +50,8 @@ const handleChange = (event: SelectChangeEvent) => {
         }
         let materialData = await materialFetch.json();
         let classData = await classFetch.json();
-          dispatch(
-            newMaterial(
-              {materialData}
-            ))
-            dispatch(
-              newClass(
-                {classData}
-              ))
+        dispatch(newMaterial({ materialData }));
+        dispatch(newClass({ classData }));
         setError(null);
       } catch (err: any) {
         setError(err.message);
@@ -74,15 +62,17 @@ const handleChange = (event: SelectChangeEvent) => {
     getData();
   }, []);
 
-
-
   return (
-  <div className="container">
-  <MaterialList loading={loading} handleChange={handleChange} materialClass={materialClass} reset={reset} resetTable={resetTable} />
-  </div>
-  )
-
-
-}
+    <div className="container">
+      <MaterialList
+        loading={loading}
+        handleChange={handleChange}
+        materialClass={materialClass}
+        reset={reset}
+        resetTable={resetTable}
+      />
+    </div>
+  );
+};
 
 export default App;
