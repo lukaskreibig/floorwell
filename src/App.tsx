@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import MaterialList from './components/MaterialList/MaterialList';
+import { useDispatch } from 'react-redux'
+import { newMaterial } from './store/material'
+import { newClass } from './store/class'
+import { SelectChangeEvent } from '@mui/material';
 
 const App = () => {
-  const [material, setMaterial] = useState<any>(null);
-  const [materialClass, setMaterialClass] = useState<any>(null);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>("");
+  const [materialClass, setMaterialClass] = useState("1");
+  const dispatch = useDispatch()
+
+
+const handleChange = (event: SelectChangeEvent) => {
+  setMaterialClass(event.target.value as string);
+};
+
 
   useEffect((): void => {
     const getData = async (): Promise<void> => {
@@ -41,8 +51,14 @@ const App = () => {
         }
         let materialData = await materialFetch.json();
         let classData = await classFetch.json();
-        setMaterial(materialData);
-        setMaterialClass(classData);
+          dispatch(
+            newMaterial(
+              {materialData}
+            ))
+            dispatch(
+              newClass(
+                {classData}
+              ))
         setError(null);
       } catch (err: any) {
         setError(err.message);
@@ -53,11 +69,9 @@ const App = () => {
     getData();
   }, []);
 
-  console.log("Material", material)
-  console.log("MaterialClass", materialClass)
 
 
-  return (null)
+  return (<MaterialList loading={loading} handleChange={handleChange} materialClass={materialClass} />)
 
 
 }
