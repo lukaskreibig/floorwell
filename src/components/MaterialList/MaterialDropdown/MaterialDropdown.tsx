@@ -5,17 +5,21 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useSelector } from 'react-redux';
 import { ReactNode } from 'react';
+import './../../../App.css';
+import { Button } from '@mui/material';
 
 type Props = {
   handleChange: (event: SelectChangeEvent<string>, child: ReactNode) => void;
+  materialClass: string;
 }
 
-const MaterialDropdown: React.FC<Props> = ({handleChange}) => {
+const MaterialDropdown: React.FC<Props> = ({materialClass, handleChange}) => {
 let classSlice = []
 classSlice = useSelector((state:any) => state.classSlice)
 
+
   return (
-    <div>
+    <div className="dropdown">
       {classSlice.classAPI.length !== 0 ? (
      <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -23,7 +27,7 @@ classSlice = useSelector((state:any) => state.classSlice)
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={"1"}
+          value={materialClass}
           label="Materialklasse"
           onChange={handleChange}
         >
@@ -37,6 +41,9 @@ classSlice = useSelector((state:any) => state.classSlice)
       </FormControl>
     </Box>
      ) : null}
+     
+      <Button variant="outlined">Zurücksetzen</Button>
+
     </div>
   )
 }

@@ -6,10 +6,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useSelector } from 'react-redux';
 
 type Props = {
   materialClass: string;
 }
+
+const MaterialTable:React.FC<Props> = ({materialClass}) => {
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,48 +42,52 @@ const createData = (
   carbs: number,
   protein: number,
 ) => {
-  return { name, calories, fat, carbs, protein };
+  return { name, calories, fat, carbs, protein }; 
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+let materialSlice = []
+materialSlice = useSelector((state:any) => state.materialSlice)
+console.log(materialSlice)
 
-const MaterialTable:React.FC<Props> = ({materialClass}) => {
+
+console.log(materialSlice.materialSlice.length !== 0 ? console.log(materialSlice.materialSlice[0].materialData.filter((data:any) => data.idMaterialClass == materialClass)) : "Null")
+console.log(materialClass)
+
+
     return (
       <div>
+        {materialSlice.materialSlice.length !== 0 ? (
         <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell></StyledTableCell>
+            <StyledTableCell align="right">Nr.</StyledTableCell>
+            <StyledTableCell align="right">Materialklasse</StyledTableCell>
+            <StyledTableCell align="right">Dekor</StyledTableCell>
+            <StyledTableCell align="right">Name</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {materialSlice.materialSlice[0].materialData.filter((data:any) => data.idMaterialClass === Number(materialClass)).map((row:any, index:number) => (
+            <StyledTableRow key={index}>
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="right">{row.idMaterial}</StyledTableCell>
+              <StyledTableCell align="right">{row.Class}</StyledTableCell>
+              <StyledTableCell align="right">{row.Decor}</StyledTableCell>
+              <StyledTableCell align="right">{row.Name}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+        ) : (null)}
       </div>
     )
   }
   
   export default MaterialTable
+
+

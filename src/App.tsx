@@ -9,9 +9,14 @@ import { SelectChangeEvent } from '@mui/material';
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>("");
-  const [materialClass, setMaterialClass] = useState("1");
+  const [materialClass, setMaterialClass] = useState<string>("1");
+  const [reset, setReset] = useState<boolean>(false)
   const dispatch = useDispatch()
 
+const resetTable = () => {
+  setReset(true)
+  setReset(false)
+}
 
 const handleChange = (event: SelectChangeEvent) => {
   setMaterialClass(event.target.value as string);
@@ -71,7 +76,11 @@ const handleChange = (event: SelectChangeEvent) => {
 
 
 
-  return (<MaterialList loading={loading} handleChange={handleChange} materialClass={materialClass} />)
+  return (
+  <div className="container">
+  <MaterialList loading={loading} handleChange={handleChange} materialClass={materialClass} reset={reset} resetTable={resetTable} />
+  </div>
+  )
 
 
 }
